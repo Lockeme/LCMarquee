@@ -15,6 +15,7 @@
 		DEB169B42001CE9200F77BA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB169B32001CE9200F77BA0 /* main.m */; };
 		DEB169BE2001CE9200F77BA0 /* LCMarqueeViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB169BD2001CE9200F77BA0 /* LCMarqueeViewTests.m */; };
 		DEB169C92001CE9200F77BA0 /* LCMarqueeViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB169C82001CE9200F77BA0 /* LCMarqueeViewUITests.m */; };
+		DEB169D92001CEE400F77BA0 /* LCMarqueeView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB169D82001CEE400F77BA0 /* LCMarqueeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		DEB169C42001CE9200F77BA0 /* LCMarqueeViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LCMarqueeViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEB169C82001CE9200F77BA0 /* LCMarqueeViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCMarqueeViewUITests.m; sourceTree = "<group>"; };
 		DEB169CA2001CE9200F77BA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DEB169D72001CEE400F77BA0 /* LCMarqueeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCMarqueeView.h; sourceTree = "<group>"; };
+		DEB169D82001CEE400F77BA0 /* LCMarqueeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCMarqueeView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,7 @@
 		DEB169A32001CE9200F77BA0 /* LCMarqueeView */ = {
 			isa = PBXGroup;
 			children = (
+				DEB169D62001CEE400F77BA0 /* Marquee */,
 				DEB169A42001CE9200F77BA0 /* AppDelegate.h */,
 				DEB169A52001CE9200F77BA0 /* AppDelegate.m */,
 				DEB169A72001CE9200F77BA0 /* ViewController.h */,
@@ -130,6 +134,15 @@
 				DEB169CA2001CE9200F77BA0 /* Info.plist */,
 			);
 			path = LCMarqueeViewUITests;
+			sourceTree = "<group>";
+		};
+		DEB169D62001CEE400F77BA0 /* Marquee */ = {
+			isa = PBXGroup;
+			children = (
+				DEB169D72001CEE400F77BA0 /* LCMarqueeView.h */,
+				DEB169D82001CEE400F77BA0 /* LCMarqueeView.m */,
+			);
+			path = Marquee;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEB169D92001CEE400F77BA0 /* LCMarqueeView.m in Sources */,
 				DEB169A92001CE9200F77BA0 /* ViewController.m in Sources */,
 				DEB169B42001CE9200F77BA0 /* main.m in Sources */,
 				DEB169A62001CE9200F77BA0 /* AppDelegate.m in Sources */,
