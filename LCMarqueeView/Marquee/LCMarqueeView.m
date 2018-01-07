@@ -24,7 +24,7 @@
 
 @implementation LCMarqueeView
 
--(instancetype)initWithFrame:(CGRect)frame andContent:(NSString *)content 
+-(instancetype)initWithFrame:(CGRect)frame andContent:(NSString *)content
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -78,6 +78,9 @@
         _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(_contentWidth+_placeholderWidth, 0, _contentWidth, CGRectGetHeight(self.frame))];
         _placeholderLabel.font = [UIFont systemFontOfSize:_marqueeFont];
         _placeholderLabel.text = _content;
+        if (_contentWidth <= CGRectGetWidth(self.frame)) {
+            _placeholderLabel.hidden = YES;
+        }
     }
     return _placeholderLabel;
 }
@@ -116,6 +119,11 @@
 #pragma mark - Animate Control
 -(void)startMarqueeAnimate
 {
+    if (_contentWidth <= CGRectGetWidth(self.frame)) {
+        _placeholderLabel.hidden = YES;
+        return;
+    }
+    _placeholderLabel.hidden = NO;
     [self stopMarqueeAnimate];
     [self propertySettings];
     CAKeyframeAnimation *frameAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
@@ -137,3 +145,4 @@
     [_marqueeView.layer removeAnimationForKey:MARQUEE_ANIMATE];
 }
 @end
+
