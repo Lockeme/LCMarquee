@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UILabel *marqueeLabel;//content label
 @property (nonatomic, strong) UIView *placeholderView;//占位View
 @property (nonatomic, strong) UILabel *placeholderLabel;//占位label
+@property (nonatomic, strong) CAKeyframeAnimation *frameAnimation;
 @end
 
 @implementation LCMarqueeView
@@ -85,6 +86,26 @@
     return _placeholderLabel;
 }
 
+-(CAKeyframeAnimation *)frameAnimation
+{
+    if (!_frameAnimation) {
+        _frameAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+        NSValue *value1 = [NSValue valueWithCGPoint:_marqueeView.center];
+        NSValue *value2 = [NSValue valueWithCGPoint:CGPointMake(_marqueeView.center.x-_contentWidth-_placeholderWidth, _marqueeView.center.y)];
+        _frameAnimation.values = @[value1,value2];
+        _frameAnimation.fillMode = kCAFillModeForwards;
+        _frameAnimation.removedOnCompletion = NO;
+        _frameAnimation.delegate = self;
+        /** 重复次数 default 1 */
+        _frameAnimation.repeatCount = 1;
+        /** 动画节奏控制 - Linear匀速 */
+        _frameAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+        /** 动画时间 */
+        _frameAnimation.duration = _duration;
+    }
+    return _frameAnimation;
+}
+
 - (void)propertySettings
 {
     //字体颜色
@@ -126,23 +147,22 @@
     _placeholderLabel.hidden = NO;
     [self stopMarqueeAnimate];
     [self propertySettings];
-    CAKeyframeAnimation *frameAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-    NSValue *value1 = [NSValue valueWithCGPoint:_marqueeView.center];
-    NSValue *value2 = [NSValue valueWithCGPoint:CGPointMake(_marqueeView.center.x-_contentWidth-_placeholderWidth, _marqueeView.center.y)];
-    frameAnimation.values = @[value1,value2];
-    frameAnimation.fillMode = kCAFillModeForwards;
-    /** 重复次数 default 1 */
-    frameAnimation.repeatCount = INT16_MAX;
-    /** 动画节奏控制 - Linear匀速 */
-    frameAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    /** 动画时间 */
-    frameAnimation.duration = _duration;
-    [_marqueeView.layer addAnimation:frameAnimation forKey:MARQUEE_ANIMATE];
+    [_marqueeView.layer addAnimation:self.frameAnimation forKey:MARQUEE_ANIMATE];
 }
 
 -(void)stopMarqueeAnimate
 {
     [_marqueeView.layer removeAnimationForKey:MARQUEE_ANIMATE];
+}
+
+#pragma mark - Animate delegate
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    if (flag) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self startMarqueeAnimate];
+        });
+    }
 }
 @end
 

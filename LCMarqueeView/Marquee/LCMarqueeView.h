@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LCMarqueeView : UIView
+@interface LCMarqueeView : UIView<CAAnimationDelegate>
 
 //修改属性后需要调用 -(void)startMarqueeAnimate 才能生效
 /** 跑马灯字体大小, default is 12 */
