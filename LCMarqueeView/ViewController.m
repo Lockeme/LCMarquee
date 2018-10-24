@@ -24,15 +24,17 @@
 
 - (void)createMarquee
 {
-    LCMarqueeView *marquee = [[LCMarqueeView alloc] initWithFrame:CGRectMake(10, 100, [UIScreen mainScreen].bounds.size.width - 20, 60) andContent:@"LC自制基础跑马灯，功能还有待完善，需要加功能或改bug请加我qq:443924584告诉我，感谢支持！！"];
+    LCMarqueeView *marquee = [[LCMarqueeView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width - 60, 60) andContent:@"自制基础跑马灯跑马灯跑马灯跑马灯跑马灯，自制基础跑马灯跑马灯跑马灯跑马灯跑马灯"];
+    marquee.center = self.view.center;
     /** 属性设置
     marquee.marqueeFont = 18;
     marquee.duration = 12.f;
     marquee.marqueeColor = [UIColor redColor];
     marquee.placeholderWidth = 60.f;
+    marquee.pauseInterval = 0;
     */
-    [marquee startMarqueeAnimate];
     [self.view addSubview:marquee];
+    [marquee startMarqueeAnimate];
 }
 
 

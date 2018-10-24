@@ -12,7 +12,6 @@
 #define MARQUEE_ANIMATE @"marquee_animation"
 @interface LCMarqueeView()
 {
-    NSString *_content;
     CGFloat _contentWidth;
 }
 /** 主View,包含 marqueeLabel-placeholderView-placeholderLabel */
@@ -30,9 +29,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         if (content.length) {
-            _content = content;
+            _contentString = content;
             _marqueeFont = 12;
             _placeholderWidth = PLACEHOLDER_WIDTH_DEFAULT;
+            _pauseInterval = 2;
             [self addSubview:self.marqueeView];
             self.clipsToBounds = YES;
         }
@@ -44,7 +44,7 @@
 -(UIView *)marqueeView
 {
     if (!_marqueeView) {
-        CGSize contentSize = [_content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:_marqueeFont]}];
+        CGSize contentSize = [_contentString sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:_marqueeFont]}];
         _contentWidth = contentSize.width;
         _duration = _contentWidth/CGRectGetWidth(self.frame)*8.f;//初始化动画时间
         _marqueeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _contentWidth*2+_placeholderWidth, CGRectGetHeight(self.frame))];
@@ -60,7 +60,7 @@
     if (!_marqueeLabel) {
         _marqueeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _contentWidth, CGRectGetHeight(self.frame))];
         _marqueeLabel.font = [UIFont systemFontOfSize:_marqueeFont];
-        _marqueeLabel.text = _content;
+        _marqueeLabel.text = _contentString;
     }
     return _marqueeLabel;
 }
@@ -78,7 +78,7 @@
     if (!_placeholderLabel) {
         _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(_contentWidth+_placeholderWidth, 0, _contentWidth, CGRectGetHeight(self.frame))];
         _placeholderLabel.font = [UIFont systemFontOfSize:_marqueeFont];
-        _placeholderLabel.text = _content;
+        _placeholderLabel.text = _contentString;
         if (_contentWidth <= CGRectGetWidth(self.frame)) {
             _placeholderLabel.hidden = YES;
         }
@@ -114,8 +114,11 @@
     //字号
     _marqueeLabel.font = [UIFont systemFontOfSize:_marqueeFont];
     _placeholderLabel.font = [UIFont systemFontOfSize:_marqueeFont];
+    //内容
+    _marqueeLabel.text = _contentString;
+    _placeholderLabel.text = _contentString;
     //subviews调整
-    CGSize contentSize = [_content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:_marqueeFont]}];
+    CGSize contentSize = [_contentString sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:_marqueeFont]}];
     _contentWidth = contentSize.width;
     //marquee view
     CGRect subFrame = _marqueeView.frame;
@@ -159,7 +162,7 @@
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     if (flag) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_pauseInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self startMarqueeAnimate];
         });
     }
